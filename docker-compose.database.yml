@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  job-match-postgres:
+    container_name: job-match-postgres
+    image: postgres:14
+    environment:
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: your_database
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - job-match-net
+
+volumes:
+  postgres_test_data:
+
+networks:
+  job-match-net:
