@@ -37,3 +37,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
         if record.updated_by:
             return f"{record.updated_by.first_name} {record.updated_by.last_name}"
         return "UNKNOWN"
+    
+
+class UserCreateSerializer(serializers.Serializer):
+    mobile = serializers.CharField(max_length=15)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    line_token = serializers.CharField(max_length=255)

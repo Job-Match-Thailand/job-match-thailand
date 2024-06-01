@@ -2,7 +2,7 @@ import json
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 
 from api.common.decorators import response_decorator
@@ -10,13 +10,20 @@ from api.common.custom_pagination import CustomPagination
 
 from . import serializers
 from .models import User
+from api.authenticate import generate_authenticate_token
 
 class UserView(APIView):
     """
     List of users
     """
 
-    # permission_classes = (IsAuthenticated,)
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [IsAuthenticated()]
+        elif self.request.method == 'POST':
+            return [AllowAny()]
+        return super().get_permissions()
+
 
     @response_decorator
     def get(self, request, *args, **kwargs):
@@ -30,13 +37,6 @@ class UserView(APIView):
         query_params = request.query_params
         users = User.objects.all().order_by("id")
 
-        # only_user = query_params.get("only_user")
-        # if only_user == "Yes":
-        #     not_want_user = q = Q(email="erp@no-reply.com") | Q(
-        #         email="system@no-reply.com"
-        #     )
-        #     users = users.exclude(not_want_user)
-
         paginator = CustomPagination(users, query_params)
 
         try:
@@ -47,3 +47,32 @@ class UserView(APIView):
             return paginator.get_paginated_response()
         except (PageNotAnInteger, EmptyPage):
             return paginator.get_paginated_response()
+        
+    @response_decorator
+    def post(self, request, *args, **kwargs):
+
+        data = request.data
+        serializer = serializers.UserCreateSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        validated_data = serializer.validated_data
+        user = User(**validated_data)
+        user.created_by_id = request.user.id
+        user.updated_by_id = request.user.id
+        user.save()
+
+        tokens = generate_authenticate_token(user)
+
+        response = {"id": user.id}
+        response.update(tokens)
+
+        return response
+    
+class MeView(APIView):
+
+    permission_classes = (IsAuthenticated, )
+    
+    @response_decorator
+    def get(self, request, *args, **kwargs):
+        serializer = serializers.UserDetailSerializer(request.user)
+        return serializer.data

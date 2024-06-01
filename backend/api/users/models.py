@@ -58,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     objects = UserManager()
 
     def __str__(self):
-        return str(self.email)
+        return str(self.mobile)
 
     def get_full_name(self):
         return ("%s %s") % (self.first_name, self.last_name)
@@ -70,6 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
             models.Index(
                 fields=[
                     "mobile",
+                    "line_token"
                 ]
             ),
         ]

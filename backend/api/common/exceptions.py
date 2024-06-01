@@ -32,6 +32,15 @@ class NotAllowed(Exception):
 
     def get_status_code(self):
         return 403
+    
+
+class NotExist(Exception):
+    def __init__(self, message="Does not exists"):
+        self.message = message
+        super().__init__(self.message)
+
+    def get_status_code(self):
+        return 404
 
 
 class InternalServerError(Exception):
