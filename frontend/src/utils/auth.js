@@ -3,13 +3,14 @@ import jwtDecode from 'jwt-decode'
 const ID_TOKEN_KEY = 'access'
 const ID_REFRESH_KEY = 'refresh'
 
-import axiosInstance from './axios'
+import {axiosInstance, axiosAnonymousInstance} from './axios'
+import store from "@/store";
 
 export const loginByLineUserID = () => {
     return new Promise((resolve, reject) => {
         try {
             let line_data = JSON.parse(localStorage.getItem(`LIFF_STORE:${import.meta.env.VITE_LIFF_ID}:context`));
-            axiosInstance.post('/api/v1/login/', {"line_token": line_data.userId})
+            axiosAnonymousInstance.post('/api/v1/login/', {"line_token": line_data.userId})
                 .then(r => {
                     saveToken(r.data.data.access);
                     saveRefresh(r.data.data.refresh);
@@ -31,8 +32,8 @@ export const loginByLineUserID = () => {
 export const fetchUser = async () => {
     try {
         let r = await axiosInstance.get('/api/v1/users/me/')
-        console.log(r.data)
-        
+        store.state.user = r.data.data
+
     } catch (e) {
         console.error('error', e)
     }

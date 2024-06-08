@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {getToken} from '../utils/auth'
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL, // Replace with your API base URL
   timeout: 1000,
   // headers: {'X-Custom-Header': 'foobar'}
@@ -36,10 +36,17 @@ axiosInstance.interceptors.response.use(
     // Do something with response error
     if (error.response && error.response.status === 401) {
       // For example, redirect to login page if unauthorized
-      window.location.href = '/login';
+      window.location.href = '/register';
     }
     return Promise.reject(error);
   }
 );
 
+export const axiosAnonymousInstance = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL, // Replace with your API base URL
+  timeout: 1000,
+  // headers: {'X-Custom-Header': 'foobar'}
+});
+
+// export default {axiosInstance: axiosInstance, axiosAnonymousInstance: axiosAnonymousInstance};
 export default axiosInstance;

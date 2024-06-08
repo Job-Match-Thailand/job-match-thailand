@@ -14,6 +14,7 @@ import router from './router/index'
 // Composables
 import { createApp } from 'vue'
 import axiosPlugin from './plugins/axiosPlugin'
+import store from "@/store";
 
 const app = createApp(App)
 
@@ -24,6 +25,7 @@ app.use(axiosPlugin);
 
 app.provide('$env', import.meta.env);
 app.config.globalProperties.$env = import.meta.env;
+app.config.globalProperties.$store = store;
 // ApiService.init()
 
 app.mount('#app')

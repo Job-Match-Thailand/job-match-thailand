@@ -1,41 +1,23 @@
 <template>
-    <v-card>
-      select {{select}}
+    <div style="padding: 5px">
       <h2 class="text-center">ขั้นตอนที่ 2</h2>
       <h3 class="text-center">การใช้งานของคุณ</h3>
-        <v-form ref="form" class="mt-5">
-              <v-item-group mandatory :model-value="select">
-    <v-container>
-      <v-row>
-        <v-col
-          v-for="n in 3"
-          :key="n"
-          cols="12"
-          md="4"
-        >
-          <v-item v-slot="{ isSelected, toggle }" :key="n">
-            <v-card
-              :color="isSelected ? 'primary' : ''"
-              class="d-flex align-center"
-              height="200"
-              dark
-              @click="toggle"
-            >
-              <v-scroll-y-transition>
-                <div
-                  class="text-h3 flex-grow-1 text-center"
-                >
-                  {{ isSelected ? 'Selected' : 'Click Me!' }}
-                </div>
-              </v-scroll-y-transition>
-            </v-card>
-          </v-item>
+      <v-row class="text-center my-10">
+        <v-col cols="6">
+          <v-card elevation="2" class="pa-10">
+            เจ้าของร้าน / เจ้าของธุรกิจ
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card elevation="2" class="pa-10">
+            เจ้าของร้าน / เจ้าของธุรกิจ
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <link @click="$router.push('/profile')">ข้ามไปก่อน</link>
         </v-col>
       </v-row>
-    </v-container>
-  </v-item-group>
-        </v-form>
-    </v-card>
+    </div>
 </template>
 
 <script>

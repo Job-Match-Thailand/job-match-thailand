@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import {axiosAnonymousInstance} from "@/utils/axios";
+
 export default {
     props: {
         form: {
@@ -36,7 +38,7 @@ export default {
       async register() {
         try {
             let line_data = JSON.parse(localStorage.getItem(`LIFF_STORE:${this.$env.VITE_LIFF_ID}:context`))
-            let r = await this.$axios.post('/api/v1/users/', {...this.form, line_token: line_data.userId})
+            let r = await axiosAnonymousInstance.post('/api/v1/users/', {...this.form, line_token: line_data.userId})
             console.log(r.data)
         } catch (error) {
             console.error(error)

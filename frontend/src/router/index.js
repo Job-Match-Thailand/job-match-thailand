@@ -12,6 +12,10 @@ const routes = [
   { path: '/', component: () => import('../pages/index'), },
   { path: '/profile', component: () => import('../views/profile/ProfileManage'), },
   { path: '/register', component: () => import('../views/register/RegisterForm'), },
+
+  // merchant
+  { path: '/merchant/add', component: () => import('../views/merchant/MerchanrCreate'), },
+  { path: '/merchant/edit/:id', component: () => import('../views/merchant/MerchanrCreate'), },
 ]
 
 const router = createRouter({
